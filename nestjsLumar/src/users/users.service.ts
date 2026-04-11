@@ -1,47 +1,110 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
-import {CreateUserDto} from './dto/create-user.dto';
-import {UpdateUserDto} from './dto/update-user.dto';
-import {InjectRepository} from "@nestjs/typeorm";
-import {User} from "./entities/user.entity";
-import {Repository} from "typeorm";
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
+import { Repository } from 'typeorm';
+
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
+  private readonly logger = new Logger('ProductsService');
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
-    constructor(
+  async create(createUserDto: CreateUserDto) {
+    try {
+      const { password, ...userInf } = createUserDto;
 
-        @InjectRepository(User)
-        private readonly userRepository : Repository<User>,
-    ) {}
+      const hashPassword = await bcrypt.hash(password, 10);
 
-    async create(createUserDto: CreateUserDto) {
+      const user = this.userRepository.create({
+        ...userInf,
+        password: hashPassword,
+      });
+      await this.userRepository.save(user);
 
-        const user = this.userRepository.create(createUserDto);
+      const { password: _, ...userSave } = user;
+      return userSave;
+    } catch (error) {
+      this.handleDBExceptions(error);
+    }
+  }
 
+  async findAll() {
+    const users = await this.userRepository.find();
 
-        if (!user) {
+    return users.map(({ password, ...user }) => user);
+  }
 
-            throw new NotFoundException();
-        }
+  async findOne(id: string) {
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+    const { password, ...userInf } = user;
+    return userInf;
+  }
 
-        await this.userRepository.save(user)
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    if (updateUserDto.password) {
+      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+    }
+    const user = await this.userRepository.preload({
+      id: id,
+      ...updateUserDto,
+    });
 
-        return user;
+    if (!user) {
+      throw new NotFoundException('Usuario para actualizar no encontrado');
     }
 
-    findAll() {
-        return `This action returns all users`;
+    await this.userRepository.save(user);
+
+    const { password, ...userUpdate } = user;
+
+    return userUpdate;
+  }
+
+  async remove(id: string) {
+    const user = await this.userRepository.findOneBy({ id });
+
+    if (!user) {
+      throw new NotFoundException('El usuario no existe');
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} user`;
-    }
+    await this.userRepository.remove(user);
 
-    update(id: number, updateUserDto: UpdateUserDto) {
-        return `This action updates a #${id} user`;
-    }
+    const { password, ...userRemove } = user;
+    return userRemove;
+  }
 
-    remove(id: number) {
-        return `This action removes a #${id} user`;
+  //Funcion para error de dato repetido
+
+  private handleDBExceptions(error: any) {
+    //console.log(error);
+    if (error.code === '23505') {
+      const detail: string = error.detail;
+
+      const field = detail.match(/\((.*?)\)/)?.[1]; // obtiene el nombre del campo
+
+      throw new BadRequestException(
+        `El campo '${field}' ya existe en la base de datos`,
+      );
     }
+    this.logger.error(error);
+    //console.log(error);
+    throw new InternalServerErrorException(
+      'Unexpected error, check server logs',
+    );
+  }
 }

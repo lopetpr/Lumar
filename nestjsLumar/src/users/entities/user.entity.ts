@@ -1,27 +1,35 @@
-import {Column, Entity, Migration, PrimaryGeneratedColumn} from "typeorm";
-
+import { Exclude } from 'class-transformer';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @Column('text', {
+    unique: true,
+  })
+  user_name!: string;
 
-    @Column('text')
-    name: string;
+  @Column('text')
+  nombre!: string;
 
-    @Column('text', {
-        unique: true,
-    })
-    email: string;
+  @Column('text')
+  password!: string;
 
-    @Column('text', {
-        select: false,
-    })
-    password: string;
+  //1 es admi y 2 es empleado
+  @Column('int')
+  rol!: number;
 
-    @Column('timestamp', {
-        default: () => 'CURRENT_TIMESTAMP',
-    })
-    timestamp: Date;
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updateAt!: Date;
 }
