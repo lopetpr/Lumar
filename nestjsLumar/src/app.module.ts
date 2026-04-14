@@ -1,30 +1,28 @@
-import {Module} from '@nestjs/common';
-import {UsersModule} from './users/users.module';
-import {TypeOrmModule} from "@nestjs/typeorm";
-import {ConfigModule} from "@nestjs/config";
-
+import { Module } from '@nestjs/common';
+import { UsersModule } from './users/users.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { CategoriasModule } from './categorias/categorias.module';
+import { ProductosModule } from './productos/productos.module';
 
 @Module({
-
-    imports: [UsersModule,
-        ConfigModule.forRoot(),
-        TypeOrmModule.forRoot({
-            type: 'postgres',
-            host: process.env.DB_HOST,
-            port: +(process.env.DB_PORT || '5432'),
-            database: process.env.DB_NAME,
-            username: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            //esto es para que cargue automaticamente las entidades
-            autoLoadEntities: true,
-            //solo para desarrollo
-            synchronize: true
-        }),
-
-
-    ],
-
-
+  imports: [
+    UsersModule,
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DB_HOST,
+      port: +(process.env.DB_PORT || '5432'),
+      database: process.env.DB_NAME,
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      //esto es para que cargue automaticamente las entidades
+      autoLoadEntities: true,
+      //solo para desarrollo
+      synchronize: true,
+    }),
+    CategoriasModule,
+    ProductosModule,
+  ],
 })
-export class AppModule {
-}
+export class AppModule {}
