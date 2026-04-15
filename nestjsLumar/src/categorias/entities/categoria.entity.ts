@@ -1,3 +1,4 @@
+import { Producto } from 'src/productos/entities/producto.entity';
 import {
   Column,
   CreateDateColumn,
@@ -24,4 +25,7 @@ export class Categoria {
   updateAt!: Date;
 
   //relaciones uno a muchos con productos
+
+  @OneToMany(() => Producto, (producto) => producto.categoria_id)
+  productos!: Producto[];
 }
