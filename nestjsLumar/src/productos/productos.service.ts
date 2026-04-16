@@ -24,37 +24,42 @@ export class ProductosService {
   ) {}
 
   async create(createProductoDto: CreateProductoDto) {
-    const categoria = await this.categoriaRepository.findOneBy({
-      id: createProductoDto.categoria_id,
-    });
-
-    if (!categoria) {
-      throw new NotFoundException('Categoria no encontrada');
-    }
-
     try {
+      const { categoria_id, ...productoData } = createProductoDto;
+
+      const categoria = await this.categoriaRepository.findOneBy({
+        id: categoria_id,
+      });
+
+      if (!categoria) {
+        throw new NotFoundException('Categoria no encontrada');
+      }
+
       const producto = this.productoRepository.create({
-        ...createProductoDto,
+        ...productoData,
         categoria_id: categoria,
       });
 
-      await this.productoRepository.save(producto);
-      return producto;
+      return await this.productoRepository.save(producto);
     } catch (error) {
       this.handleDBExceptions(error);
     }
   }
 
   async findAll() {
-    return this.productoRepository.find({
-      relations: { categoria_id: true },
+    return await this.productoRepository.find({
+      relations: {
+        categoria_id: true,
+      },
     });
   }
 
   async findOne(id: string) {
     const producto = await this.productoRepository.findOne({
       where: { id },
-      relations: { categoria_id: true },
+      relations: {
+        categoria_id: true,
+      },
     });
 
     if (!producto) {
@@ -65,32 +70,25 @@ export class ProductosService {
   }
 
   async update(id: string, updateProductoDto: UpdateProductoDto) {
-    const { categoria_id, ...restData } = updateProductoDto;
+    const producto = await this.findOne(id);
+    const { categoria_id, ...productoData } = updateProductoDto;
 
-    const producto = await this.productoRepository.findOneBy({ id });
+    if (categoria_id) {
+      const categoria = await this.categoriaRepository.findOneBy({
+        id: categoria_id,
+      });
 
-    if (!producto) {
-      throw new NotFoundException('Producto no encontrado');
-    }
-
-    try {
-      Object.assign(producto, restData);
-
-      if (categoria_id) {
-        const categoria = await this.categoriaRepository.findOneBy({
-          id: categoria_id,
-        });
-
-        if (!categoria) {
-          throw new NotFoundException('Categoria no encontrada');
-        }
-
-        producto.categoria_id = categoria;
+      if (!categoria) {
+        throw new NotFoundException('Categoria no encontrada');
       }
 
-      await this.productoRepository.save(producto);
+      producto.categoria_id = categoria;
+    }
 
-      return this.findOne(id);
+    Object.assign(producto, productoData);
+
+    try {
+      return await this.productoRepository.save(producto);
     } catch (error) {
       this.handleDBExceptions(error);
     }
@@ -98,15 +96,18 @@ export class ProductosService {
 
   async remove(id: string) {
     const producto = await this.findOne(id);
-
     await this.productoRepository.remove(producto);
-
     return producto;
   }
 
   private handleDBExceptions(error: any): never {
+    if (error instanceof NotFoundException) {
+      throw error;
+    }
+
     if (error?.code === '23505') {
-      throw new BadRequestException('Registro duplicado');
+      const detail: string = error.detail || 'Dato duplicado';
+      throw new BadRequestException(detail);
     }
 
     this.logger.error(error);

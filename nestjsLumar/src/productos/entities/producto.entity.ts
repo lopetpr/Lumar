@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -28,8 +29,10 @@ export class Producto {
   @Column('text')
   genero!: string;
 
-  @Column('text')
-  imagen!: string;
+  @Column('text', {
+    nullable: true,
+  })
+  imagen?: string;
 
   @Column('numeric', {
     default: 0,
@@ -50,5 +53,6 @@ export class Producto {
   //Relaciones con otros modulos
 
   @ManyToOne(() => Categoria, (categoria) => categoria.productos)
+  @JoinColumn({ name: 'categoria_id' })
   categoria_id!: Categoria;
 }
