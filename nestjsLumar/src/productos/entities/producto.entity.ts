@@ -1,10 +1,12 @@
 import { Categoria } from 'src/categorias/entities/categoria.entity';
+import { Stock } from 'src/stocks/entities/stock.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -55,4 +57,7 @@ export class Producto {
   @ManyToOne(() => Categoria, (categoria) => categoria.productos)
   @JoinColumn({ name: 'categoria_id' })
   categoria_id!: Categoria;
+
+  @OneToMany(() => Stock, (stock) => stock.producto_id)
+  stock!: Stock[];
 }

@@ -1,7 +1,9 @@
+import { Stock } from 'src/stocks/entities/stock.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -22,4 +24,9 @@ export class Tienda {
 
   @UpdateDateColumn()
   updateAt!: Date;
+
+  //Relaciones
+
+  @OneToMany(() => Stock, (stock) => stock.tienda_id)
+  stock!: Stock[];
 }
