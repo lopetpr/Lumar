@@ -10,7 +10,7 @@ import { UpdateProductoDto } from './dto/update-producto.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Producto } from './entities/producto.entity';
 import { Repository } from 'typeorm';
-import { Categoria } from 'src/categorias/entities/categoria.entity';
+import { CategoriasService } from 'src/categorias/categorias.service';
 
 @Injectable()
 export class ProductosService {
@@ -19,25 +19,20 @@ export class ProductosService {
   constructor(
     @InjectRepository(Producto)
     private readonly productoRepository: Repository<Producto>,
-    @InjectRepository(Categoria)
-    private readonly categoriaRepository: Repository<Categoria>,
+
+    //Se usa para usar el service
+    private readonly categoriasService: CategoriasService,
   ) {}
 
   async create(createProductoDto: CreateProductoDto) {
     try {
       const { categoria_id, ...productoData } = createProductoDto;
 
-      const categoria = await this.categoriaRepository.findOneBy({
-        id: categoria_id,
-      });
-
-      if (!categoria) {
-        throw new NotFoundException('Categoria no encontrada');
-      }
+      const categoria = await this.categoriasService.findOne(categoria_id);
 
       const producto = this.productoRepository.create({
         ...productoData,
-        categoria_id: categoria,
+        categoria: categoria,
       });
 
       return await this.productoRepository.save(producto);
@@ -49,7 +44,7 @@ export class ProductosService {
   async findAll() {
     return await this.productoRepository.find({
       relations: {
-        categoria_id: true,
+        categoria: true,
       },
     });
   }
@@ -58,7 +53,7 @@ export class ProductosService {
     const producto = await this.productoRepository.findOne({
       where: { id },
       relations: {
-        categoria_id: true,
+        categoria: true,
       },
     });
 
@@ -74,15 +69,8 @@ export class ProductosService {
     const { categoria_id, ...productoData } = updateProductoDto;
 
     if (categoria_id) {
-      const categoria = await this.categoriaRepository.findOneBy({
-        id: categoria_id,
-      });
-
-      if (!categoria) {
-        throw new NotFoundException('Categoria no encontrada');
-      }
-
-      producto.categoria_id = categoria;
+      const categoria = await this.categoriasService.findOne(categoria_id);
+      producto.categoria = categoria;
     }
 
     Object.assign(producto, productoData);

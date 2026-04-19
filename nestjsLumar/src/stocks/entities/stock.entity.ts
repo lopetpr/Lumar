@@ -27,12 +27,15 @@ export class Stock {
   updateAt!: Date;
 
   //relaciones
-
-  @ManyToOne(() => Tienda, (tienda) => tienda.stock)
+  @ManyToOne(() => Tienda, (tienda) => tienda.stock, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'tienda_id' })
-  tienda_id!: string;
+  tienda!: Tienda;
 
-  @ManyToOne(() => Producto, (producto) => producto.stock)
+  @ManyToOne(() => Producto, (producto) => producto.stock, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'producto_id' })
-  producto_id!: string;
+  producto!: Producto;
 }

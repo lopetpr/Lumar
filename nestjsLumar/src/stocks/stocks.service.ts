@@ -10,40 +10,95 @@ import { UpdateStockDto } from './dto/update-stock.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Stock } from './entities/stock.entity';
 import { Repository } from 'typeorm';
-import { Tienda } from 'src/tiendas/entities/tienda.entity';
-import { Producto } from 'src/productos/entities/producto.entity';
+import { TiendasService } from 'src/tiendas/tiendas.service';
+import { ProductosService } from 'src/productos/productos.service';
 
 @Injectable()
 export class StocksService {
   private readonly logger = new Logger('StocksService');
+
   constructor(
     @InjectRepository(Stock)
     private readonly stockRepository: Repository<Stock>,
 
-    @InjectRepository(Tienda)
-    private readonly tiendaRepository: Repository<Tienda>,
+    private readonly tiendasService: TiendasService,
 
-    @InjectRepository(Producto)
-    private readonly productoRepository: Repository<Producto>,
+    private readonly productosService: ProductosService,
   ) {}
-  create(createStockDto: CreateStockDto) {
-    return 'This action adds a new stock';
+  async create(createStockDto: CreateStockDto) {
+    try {
+      const { tienda_id, producto_id, ...stockData } = createStockDto;
+      const tienda = await this.tiendasService.findOne(tienda_id);
+      const producto = await this.productosService.findOne(producto_id);
+
+      const stock = this.stockRepository.create({
+        ...stockData,
+        tienda,
+        producto,
+      });
+
+      await this.stockRepository.save(stock);
+
+      return stock;
+    } catch (error) {
+      this.handleDBExceptions(error);
+    }
   }
 
-  findAll() {
-    return `This action returns all stocks`;
+  async findAll() {
+    return await this.stockRepository.find({
+      relations: {
+        tienda: true,
+        producto: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} stock`;
+  async findOne(id: string) {
+    const stock = await this.stockRepository.findOne({
+      where: { id },
+      relations: {
+        tienda: true,
+        producto: true,
+      },
+    });
+
+    if (!stock) {
+      throw new NotFoundException('No se encontro stock');
+    }
+
+    return stock;
   }
 
-  update(id: number, updateStockDto: UpdateStockDto) {
-    return `This action updates a #${id} stock`;
+  async update(id: string, updateStockDto: UpdateStockDto) {
+    const stock = await this.findOne(id);
+
+    const { tienda_id, producto_id, ...stockData } = updateStockDto;
+
+    if (tienda_id) {
+      const tienda = await this.tiendasService.findOne(tienda_id);
+      stock.tienda = tienda;
+    }
+
+    if (producto_id) {
+      const producto = await this.productosService.findOne(producto_id);
+      stock.producto = producto;
+    }
+
+    Object.assign(stock, stockData);
+
+    try {
+      return await this.stockRepository.save(stock);
+    } catch (error) {
+      this.handleDBExceptions(error);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} stock`;
+  async remove(id: string) {
+    const stock = await this.findOne(id);
+
+    await this.stockRepository.remove(stock);
+    return stock;
   }
 
   private handleDBExceptions(error: any): never {

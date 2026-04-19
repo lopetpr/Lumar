@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { StocksService } from './stocks.service';
 import { CreateStockDto } from './dto/create-stock.dto';
@@ -26,17 +27,20 @@ export class StocksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.stocksService.findOne(+id);
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.stocksService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStockDto: UpdateStockDto) {
-    return this.stocksService.update(+id, updateStockDto);
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateStockDto: UpdateStockDto,
+  ) {
+    return this.stocksService.update(id, updateStockDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.stocksService.remove(+id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.stocksService.remove(id);
   }
 }

@@ -54,10 +54,12 @@ export class Producto {
 
   //Relaciones con otros modulos
 
-  @ManyToOne(() => Categoria, (categoria) => categoria.productos)
+  @ManyToOne(() => Categoria, (categoria) => categoria.productos, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'categoria_id' })
-  categoria_id!: Categoria;
+  categoria!: Categoria;
 
-  @OneToMany(() => Stock, (stock) => stock.producto_id)
+  @OneToMany(() => Stock, (stock) => stock.producto)
   stock!: Stock[];
 }

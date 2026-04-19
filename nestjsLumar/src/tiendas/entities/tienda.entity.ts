@@ -27,6 +27,6 @@ export class Tienda {
 
   //Relaciones
 
-  @OneToMany(() => Stock, (stock) => stock.tienda_id)
+  @OneToMany(() => Stock, (stock) => stock.tienda)
   stock!: Stock[];
 }
