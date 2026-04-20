@@ -1,4 +1,3 @@
-import { Exclude } from 'class-transformer';
 import {
   Column,
   CreateDateColumn,
@@ -8,26 +7,15 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class User {
+export class Cliente {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
-
-  @Column('text', {
-    unique: true,
-  })
-  user_name!: string;
 
   @Column('text')
   nombre!: string;
 
-  @Column('text', {
-    select: false,
-  })
-  password!: string;
-
-  //1 es admi y 2 es empleado
-  @Column('int')
-  rol!: number;
+  @Column('text')
+  email!: string;
 
   @CreateDateColumn()
   createdAt!: Date;

@@ -23,13 +23,10 @@ export class CategoriasService {
 
   async create(createCategoriaDto: CreateCategoriaDto) {
     try {
-      const categoria = createCategoriaDto;
+      const categoria = this.categoriaRepository.create(createCategoriaDto);
+      await this.categoriaRepository.save(categoria);
 
-      const preCategoria = this.categoriaRepository.create(categoria);
-
-      await this.categoriaRepository.save(preCategoria);
-
-      return preCategoria;
+      return categoria;
     } catch (error) {}
 
     this.handleDBExceptions(error);
