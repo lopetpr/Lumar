@@ -47,18 +47,21 @@ export class UsersService {
   }
 
   async findOne(id: string) {
-    const user = await this.userRepository.findOneBy({ id });
+    const user = await this.userRepository.findOne({
+      where: { id },
+      select: { password: false },
+    });
     if (!user) {
       throw new NotFoundException('Usuario no encontrado');
     }
-    const { password, ...userInf } = user;
-    return userInf;
+    return user;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     if (updateUserDto.password) {
-      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+      updateUserDto.password = bcrypt.hashSync(updateUserDto.password, 10);
     }
+
     const user = await this.userRepository.preload({
       id: id,
       ...updateUserDto,
@@ -97,9 +100,7 @@ export class UsersService {
 
       const field = detail.match(/\((.*?)\)/)?.[1]; // obtiene el nombre del campo
 
-      throw new BadRequestException(
-        `El campo '${field}' ya existe en la base de datos`,
-      );
+      throw new BadRequestException(`El campo '${field}' ya existe `);
     }
     this.logger.error(error);
     //console.log(error);

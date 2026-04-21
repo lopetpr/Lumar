@@ -1,5 +1,5 @@
-import { Producto } from 'src/productos/entities/producto.entity';
-import { Tienda } from 'src/tiendas/entities/tienda.entity';
+import { Producto } from '../../productos/entities/producto.entity';
+import { Tienda } from '../../tiendas/entities/tienda.entity';
 import {
   Column,
   CreateDateColumn,

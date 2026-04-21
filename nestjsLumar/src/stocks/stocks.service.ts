@@ -10,8 +10,8 @@ import { UpdateStockDto } from './dto/update-stock.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Stock } from './entities/stock.entity';
 import { Repository } from 'typeorm';
-import { TiendasService } from 'src/tiendas/tiendas.service';
-import { ProductosService } from 'src/productos/productos.service';
+import { TiendasService } from '../tiendas/tiendas.service';
+import { ProductosService } from '../productos/productos.service';
 
 @Injectable()
 export class StocksService {

@@ -10,7 +10,7 @@ import { UpdateProductoDto } from './dto/update-producto.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Producto } from './entities/producto.entity';
 import { Repository } from 'typeorm';
-import { CategoriasService } from 'src/categorias/categorias.service';
+import { CategoriasService } from '../categorias/categorias.service';
 
 @Injectable()
 export class ProductosService {

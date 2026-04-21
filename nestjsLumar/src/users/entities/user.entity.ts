@@ -29,6 +29,11 @@ export class User {
   @Column('int')
   rol!: number;
 
+  @Column('bool', {
+    default: true,
+  })
+  estado!: boolean;
+
   @CreateDateColumn()
   createdAt!: Date;
 

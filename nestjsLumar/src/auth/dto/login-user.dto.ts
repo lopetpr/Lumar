@@ -1,16 +1,12 @@
 import {
-  IsEmail,
-  IsIn,
-  IsInt,
   IsNotEmpty,
-  IsPositive,
   IsString,
   Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
 
-export class CreateUserDto {
+export class LoginDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(4)
@@ -24,13 +20,4 @@ export class CreateUserDto {
       'La contraseña debe tener una mayuscula, una miniscula y un numero',
   })
   password!: string;
-
-  @IsNotEmpty()
-  @IsString()
-  nombre!: string;
-
-  @IsInt()
-  @IsPositive()
-  @IsIn([1, 2])
-  rol!: number;
 }

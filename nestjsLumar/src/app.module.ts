@@ -1,34 +1,40 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CategoriasModule } from './categorias/categorias.module';
 import { ProductosModule } from './productos/productos.module';
 import { TiendasModule } from './tiendas/tiendas.module';
 import { StocksModule } from './stocks/stocks.module';
 import { ClientesModule } from './clientes/clientes.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     UsersModule,
-    ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST,
-      port: +(process.env.DB_PORT || '5432'),
-      database: process.env.DB_NAME,
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      //esto es para que cargue automaticamente las entidades
-      autoLoadEntities: true,
-      //solo para desarrollo
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        database: configService.get<string>('DB_NAME'),
+        username: configService.get<string>('DB_USER'),
+        password: configService.get<string>('DB_PASSWORD'),
+        autoLoadEntities: true,
+        synchronize: true,
+      }),
     }),
     CategoriasModule,
     ProductosModule,
     TiendasModule,
     StocksModule,
     ClientesModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
