@@ -8,6 +8,8 @@ import { TiendasModule } from './tiendas/tiendas.module';
 import { StocksModule } from './stocks/stocks.module';
 import { ClientesModule } from './clientes/clientes.module';
 import { AuthModule } from './auth/auth.module';
+import { VentasModule } from './ventas/ventas.module';
+import { DetalleVentasModule } from './detalle-ventas/detalle-ventas.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { AuthModule } from './auth/auth.module';
     StocksModule,
     ClientesModule,
     AuthModule,
+    VentasModule,
+    DetalleVentasModule,
   ],
 })
 export class AppModule {}
