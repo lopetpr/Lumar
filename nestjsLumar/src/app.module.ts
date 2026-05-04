@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -12,6 +14,7 @@ import { VentasModule } from './ventas/ventas.module';
 import { DetalleVentasModule } from './detalle-ventas/detalle-ventas.module';
 
 @Module({
+  providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
   imports: [
     UsersModule,
     ConfigModule.forRoot({

@@ -1,7 +1,7 @@
-import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login-user.dto';
-import { AuthGuard } from '@nestjs/passport';
+import { Public } from './decorators/public.decorator';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -17,6 +17,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
+  @Public()
   @ApiOperation({ summary: 'Iniciar sesion de usuario' })
   @ApiBody({ type: LoginDto })
   @ApiOkResponse({ description: 'Login exitoso, retorna usuario y token JWT' })
@@ -26,9 +27,8 @@ export class AuthController {
   }
 
   @Get('prueba')
-  @UseGuards(AuthGuard())
-  @ApiOperation({ summary: 'Endpoint de prueba protegido por JWT' })
   @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Endpoint de prueba protegido por JWT' })
   @ApiOkResponse({ description: 'Acceso autorizado' })
   @ApiUnauthorizedResponse({ description: 'Token no valido o ausente' })
   testing() {

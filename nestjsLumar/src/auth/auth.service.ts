@@ -22,7 +22,7 @@ export class AuthService {
 
     const user = await this.userRepository.findOne({
       where: { user_name },
-      select: { id: true, user_name: true, password: true },
+      select: { id: true, user_name: true, nombre: true, rol: true, password: true },
     });
 
     if (!user) {
@@ -32,9 +32,8 @@ export class AuthService {
       throw new UnauthorizedException('Credenciales incorrectas');
     }
 
-    // TODO falta esta funcionalidad
-
-    return { ...user, token: await this.getJwtToken({ id: user.id }) };
+    const { password: _, ...userWithoutPassword } = user;
+    return { ...userWithoutPassword, token: await this.getJwtToken({ id: user.id }) };
   }
 
   private getJwtToken(payload: JwtPayload) {
