@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(claude plugin *)"
+      "Bash(claude plugin *)",
+      "Bash(yarn add *)",
+      "Bash(npx tsc *)"
     ]
   }
 }

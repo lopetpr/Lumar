@@ -7,16 +7,23 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  Query,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ProductosService } from './productos.service';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
+import { FilterProductoDto } from './dto/filter-producto.dto';
 import {
   ApiBody,
+  ApiConsumes,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 
@@ -34,10 +41,15 @@ export class ProductosController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Listar productos' })
+  @ApiOperation({ summary: 'Listar productos con filtros' })
+  @ApiQuery({ name: 'genero', required: false, enum: ['hombre', 'mujer'] })
+  @ApiQuery({ name: 'tipo', required: false, enum: ['30ml', '70ml', '100ml'] })
+  @ApiQuery({ name: 'categoria_id', required: false, type: String, description: 'UUID de categoría' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Cantidad de resultados (default: 10)' })
+  @ApiQuery({ name: 'offset', required: false, type: Number, description: 'Desplazamiento (default: 0)' })
   @ApiOkResponse({ description: 'Listado de productos' })
-  findAll() {
-    return this.productosService.findAll();
+  findAll(@Query() filterDto: FilterProductoDto) {
+    return this.productosService.findAll(filterDto);
   }
 
   @Get(':id')
@@ -58,6 +70,25 @@ export class ProductosController {
     @Body() updateProductoDto: UpdateProductoDto,
   ) {
     return this.productosService.update(id, updateProductoDto);
+  }
+
+  @Patch(':id/imagen')
+  @ApiOperation({ summary: 'Subir imagen de un producto' })
+  @ApiParam({ name: 'id', format: 'uuid', description: 'ID del producto' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: { imagen: { type: 'string', format: 'binary' } },
+    },
+  })
+  @ApiOkResponse({ description: 'Imagen subida correctamente' })
+  @UseInterceptors(FileInterceptor('imagen', { limits: { fileSize: 5 * 1024 * 1024 } }))
+  uploadImage(
+    @Param('id', ParseUUIDPipe) id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.productosService.uploadImage(id, file);
   }
 
   @Delete(':id')

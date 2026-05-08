@@ -21,8 +21,13 @@ export class CreateProductoDto {
   @IsOptional()
   descripcion?: string;
 
-  @ApiProperty({ description: 'Tipo de producto', example: 'ropa' })
+  @ApiProperty({
+    description: 'Tamaño del perfume',
+    example: '100ml',
+    enum: ['30ml', '70ml', '100ml'],
+  })
   @IsString()
+  @IsIn(['30ml', '70ml', '100ml'])
   tipo!: string;
 
   @ApiProperty({
