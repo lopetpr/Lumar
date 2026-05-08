@@ -26,15 +26,21 @@ export class ProductosService {
     private readonly filesService: FilesService,
   ) {}
 
-  async create(createProductoDto: CreateProductoDto) {
+  async create(createProductoDto: CreateProductoDto, file?: Express.Multer.File) {
     try {
-      const { categoria_id, ...productoData } = createProductoDto;
+      const { categoria_id, imagen, ...productoData } = createProductoDto;
 
       const categoria = await this.categoriasService.findOne(categoria_id);
 
+      let imageUrl: string | undefined;
+      if (file) {
+        imageUrl = await this.filesService.uploadImage(file);
+      }
+
       const producto = this.productoRepository.create({
         ...productoData,
-        categoria: categoria,
+        imagen: imageUrl,
+        categoria,
       });
 
       return await this.productoRepository.save(producto);
@@ -100,10 +106,19 @@ export class ProductosService {
   }
 
   async uploadImage(id: string, file: Express.Multer.File) {
-    if (!file) throw new BadRequestException('No se envió ninguna imagen');
+    if (!file) {
+      throw new BadRequestException(
+        'No se envió ninguna imagen. Usa multipart/form-data con el campo "imagen".',
+      );
+    }
+
+    this.logger.debug(
+      `uploadImage file received: name=${file.originalname} size=${file.size} type=${file.mimetype}`,
+    );
 
     const producto = await this.findOne(id);
     const imageUrl = await this.filesService.uploadImage(file);
+    this.logger.debug(`uploadImage uploaded: url=${imageUrl}`);
 
     producto.imagen = imageUrl;
     return await this.productoRepository.save(producto);

@@ -34,10 +34,29 @@ export class ProductosController {
 
   @Post()
   @ApiOperation({ summary: 'Crear un producto' })
-  @ApiBody({ type: CreateProductoDto })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        producto: { type: 'string' },
+        descripcion: { type: 'string' },
+        tipo: { type: 'string', enum: ['30ml', '70ml', '100ml'] },
+        genero: { type: 'string', enum: ['hombre', 'mujer'] },
+        precio_compra: { type: 'number' },
+        precio_venta: { type: 'number' },
+        categoria_id: { type: 'string', format: 'uuid' },
+        imagen: { type: 'string', format: 'binary' },
+      },
+    },
+  })
   @ApiCreatedResponse({ description: 'Producto creado correctamente' })
-  create(@Body() createProductoDto: CreateProductoDto) {
-    return this.productosService.create(createProductoDto);
+  @UseInterceptors(FileInterceptor('imagen', { limits: { fileSize: 5 * 1024 * 1024 } }))
+  create(
+    @Body() createProductoDto: CreateProductoDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    return this.productosService.create(createProductoDto, file);
   }
 
   @Get()

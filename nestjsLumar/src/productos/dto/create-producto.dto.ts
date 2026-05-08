@@ -6,6 +6,7 @@ import {
   IsString,
   IsUUID,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateProductoDto {
@@ -48,11 +49,13 @@ export class CreateProductoDto {
   imagen?: string;
 
   @ApiProperty({ description: 'Precio de compra', example: 45.5 })
+  @Type(() => Number)
   @IsPositive()
   @IsNumber()
   precio_compra!: number;
 
   @ApiProperty({ description: 'Precio de venta', example: 69.9 })
+  @Type(() => Number)
   @IsNumber()
   @IsPositive()
   precio_venta!: number;
