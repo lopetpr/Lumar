@@ -24,3 +24,17 @@ services:
     command: sh -c "npm install && npm run start:dev"
     ports:
       - 3000:3000
+  frontend:
+    container_name: front-lumar
+    image: node:20
+    working_dir: /app
+    depends_on:
+      - backend
+    env_file:
+      - .env
+    volumes:
+      - ./nextjslumar:/app
+      - /app/node_modules
+    command: sh -c "npm install && npm run start:dev"
+    ports:
+      - 3001:3001
