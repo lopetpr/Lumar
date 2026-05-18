@@ -56,7 +56,7 @@ export default function RegisterPage() {
       <div className="flex justify-end -mt-4 -mr-4">
         <p className="text-sm text-gray-500">
           ¿Ya tienes cuenta?{" "}
-          <Link href="/login" className="text-[#1a237e] font-semibold hover:underline">
+          <Link href="/login" className="text-[#1a1a1a] font-semibold hover:underline">
             Iniciar sesión &rarr;
           </Link>
         </p>
@@ -95,7 +95,7 @@ export default function RegisterPage() {
                   type="text"
                   required
                   placeholder="Laura"
-                  className="w-full pl-9 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1a237e]/20 focus:border-[#1a237e]"
+                  className="w-full pl-9 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A96E]/30 focus:border-[#C9A96E]"
                 />
               </div>
               {state.fieldErrors.name && (
@@ -112,7 +112,7 @@ export default function RegisterPage() {
                 type="text"
                 required
                 placeholder="Mejía"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1a237e]/20 focus:border-[#1a237e]"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A96E]/30 focus:border-[#C9A96E]"
               />
               {state.fieldErrors.lastName && (
                 <p className="text-xs text-red-500 mt-1">{state.fieldErrors.lastName}</p>
@@ -136,7 +136,7 @@ export default function RegisterPage() {
                 type="email"
                 required
                 placeholder="l.mejia@mail.co"
-                className="w-full pl-9 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1a237e]/20 focus:border-[#1a237e]"
+                className="w-full pl-9 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A96E]/30 focus:border-[#C9A96E]"
               />
             </div>
             {state.fieldErrors.email && (
@@ -153,7 +153,7 @@ export default function RegisterPage() {
               name="phone"
               type="tel"
               placeholder="+57 312 489 2031"
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1a237e]/20 focus:border-[#1a237e]"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A96E]/30 focus:border-[#C9A96E]"
             />
           </div>
 
@@ -169,7 +169,7 @@ export default function RegisterPage() {
               placeholder="••••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1a237e]/20 focus:border-[#1a237e]"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A96E]/30 focus:border-[#C9A96E]"
             />
             <PasswordStrength password={password} />
             {state.fieldErrors.password && (
@@ -178,12 +178,12 @@ export default function RegisterPage() {
           </div>
 
           <div className="space-y-3 pt-2">
-            <label className="flex items-start gap-3 cursor-pointer bg-blue-50/50 border border-blue-100 rounded-xl p-3">
+            <label className="flex items-start gap-3 cursor-pointer bg-[#C9A96E]/5 border border-[#C9A96E]/20 rounded-xl p-3">
               <input
                 name="wantsSample"
                 type="checkbox"
                 defaultChecked
-                className="mt-0.5 w-4 h-4 rounded border-gray-300 text-[#1a237e] focus:ring-[#1a237e]"
+                className="mt-0.5 w-4 h-4 rounded border-gray-300 text-[#1a1a1a] focus:ring-[#C9A96E]"
               />
               <span className="text-sm text-gray-600">
                 Quiero <span className="font-semibold text-gray-900">recibir 1 muestra gratis</span>{" "}
@@ -196,13 +196,13 @@ export default function RegisterPage() {
                 name="acceptedTerms"
                 type="checkbox"
                 required
-                className="mt-0.5 w-4 h-4 rounded border-gray-300 text-[#1a237e] focus:ring-[#1a237e]"
+                className="mt-0.5 w-4 h-4 rounded border-gray-300 text-[#1a1a1a] focus:ring-[#C9A96E]"
               />
               <span className="text-sm text-gray-500">
                 Acepto los{" "}
-                <Link href="#" className="text-[#1a237e] underline">Términos de Servicio</Link>{" "}
+                <Link href="#" className="text-[#1a1a1a] underline">Términos de Servicio</Link>{" "}
                 y el{" "}
-                <Link href="#" className="text-[#1a237e] underline">Tratamiento de Datos</Link>{" "}
+                <Link href="#" className="text-[#1a1a1a] underline">Tratamiento de Datos</Link>{" "}
                 de Lumar Parfums S.A.S.
               </span>
             </label>
@@ -214,7 +214,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full py-3.5 bg-[#1a237e] text-white rounded-xl font-medium text-sm hover:bg-[#283593] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-3.5 bg-[#1a1a1a] text-white rounded-xl font-medium text-sm hover:bg-[#2a2a2a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isPending ? "Creando cuenta..." : "Crear cuenta"} <span>&rarr;</span>
           </button>

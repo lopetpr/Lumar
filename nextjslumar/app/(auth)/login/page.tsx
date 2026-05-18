@@ -15,7 +15,7 @@ export default function LoginPage() {
       <div className="flex justify-end -mt-4 -mr-4">
         <p className="text-sm text-gray-500">
           ¿No tienes cuenta?{" "}
-          <Link href="/register" className="text-[#1a237e] font-semibold hover:underline">
+          <Link href="/register" className="text-[#1a1a1a] font-semibold hover:underline">
             Crear cuenta &rarr;
           </Link>
         </p>
@@ -54,7 +54,7 @@ export default function LoginPage() {
               type="email"
               required
               placeholder="laura.mejia@mail.co"
-              className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1a237e]/20 focus:border-[#1a237e]"
+              className="w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A96E]/30 focus:border-[#C9A96E]"
             />
           </div>
         </div>
@@ -64,7 +64,7 @@ export default function LoginPage() {
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Contraseña
             </label>
-            <Link href="#" className="text-sm text-[#1a237e] font-medium hover:underline">
+            <Link href="#" className="text-sm text-[#1a1a1a] font-medium hover:underline">
               ¿Olvidaste?
             </Link>
           </div>
@@ -75,7 +75,7 @@ export default function LoginPage() {
               type={showPassword ? "text" : "password"}
               required
               placeholder="••••••••••"
-              className="w-full pl-4 pr-11 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1a237e]/20 focus:border-[#1a237e]"
+              className="w-full pl-4 pr-11 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#C9A96E]/30 focus:border-[#C9A96E]"
             />
             <button
               type="button"
@@ -102,7 +102,7 @@ export default function LoginPage() {
             name="remember"
             type="checkbox"
             defaultChecked
-            className="w-4 h-4 rounded border-gray-300 text-[#1a237e] focus:ring-[#1a237e]"
+            className="w-4 h-4 rounded border-gray-300 text-[#1a1a1a] focus:ring-[#C9A96E]"
           />
           <label htmlFor="remember" className="text-sm text-gray-600">
             Recordar este dispositivo durante 30 días
@@ -112,7 +112,7 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full py-3.5 bg-[#1a237e] text-white rounded-xl font-medium text-sm hover:bg-[#283593] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-3.5 bg-[#1a1a1a] text-white rounded-xl font-medium text-sm hover:bg-[#2a2a2a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isPending ? "Iniciando sesión..." : "Iniciar sesión"}
         </button>
@@ -174,9 +174,9 @@ export default function LoginPage() {
 
       <p className="text-center text-xs text-gray-400">
         Al iniciar sesión aceptas los{" "}
-        <Link href="#" className="text-[#1a237e] hover:underline">Términos</Link>{" "}
+        <Link href="#" className="text-[#1a1a1a] hover:underline">Términos</Link>{" "}
         y la{" "}
-        <Link href="#" className="text-[#1a237e] hover:underline">Política de Privacidad</Link>.
+        <Link href="#" className="text-[#1a1a1a] hover:underline">Política de Privacidad</Link>.
       </p>
     </div>
   )

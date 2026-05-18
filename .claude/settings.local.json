@@ -14,7 +14,9 @@
       "mcp__Claude_in_Chrome__navigate",
       "mcp__Claude_in_Chrome__computer",
       "mcp__Claude_in_Chrome__find",
-      "mcp__Claude_in_Chrome__form_input"
+      "mcp__Claude_in_Chrome__form_input",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(kill 23354)"
     ]
   }
 }
