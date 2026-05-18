@@ -1,4 +1,5 @@
 import type { NextAuthConfig } from "next-auth"
+import type { JWT } from "@auth/core/jwt"
 import Credentials from "next-auth/providers/credentials"
 import { loginUser } from "@/lib/api/auth-api"
 
@@ -37,9 +38,10 @@ export default {
       return token
     },
     session({ session, token }) {
-      session.user.id = token.sub!
-      session.user.role = token.role
-      session.user.accessToken = token.accessToken
+      const t = token as JWT
+      session.user.id = t.sub!
+      session.user.role = t.role
+      session.user.accessToken = t.accessToken
       return session
     },
   },

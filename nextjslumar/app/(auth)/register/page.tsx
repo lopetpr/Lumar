@@ -49,7 +49,6 @@ function PasswordStrength({ password }: { password: string }) {
 
 export default function RegisterPage() {
   const [state, formAction, isPending] = useActionState(registerAction, initialState)
-  const [step, setStep] = useState(1)
   const [password, setPassword] = useState("")
 
   return (
@@ -72,38 +71,13 @@ export default function RegisterPage() {
         </p>
       </div>
 
-      <div className="flex items-center gap-2">
-        {[
-          { num: 1, label: "Tus datos" },
-          { num: 2, label: "Preferencias" },
-          { num: 3, label: "Verificación" },
-        ].map(({ num, label }) => (
-          <div key={num} className="flex items-center gap-2">
-            <div
-              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
-                step >= num
-                  ? "bg-[#1a237e] text-white"
-                  : "bg-gray-100 text-gray-400"
-              }`}
-            >
-              {num}
-            </div>
-            <span className={`text-sm ${step >= num ? "text-gray-900 font-medium" : "text-gray-400"}`}>
-              {label}
-            </span>
-            {num < 3 && <div className="w-8 h-px bg-gray-200 mx-1" />}
-          </div>
-        ))}
-      </div>
-
       {state.error && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
           {state.error}
         </div>
       )}
 
-      {step === 1 && (
-        <form action={formAction} className="space-y-4">
+      <form action={formAction} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
@@ -242,50 +216,9 @@ export default function RegisterPage() {
             disabled={isPending}
             className="w-full py-3.5 bg-[#1a237e] text-white rounded-xl font-medium text-sm hover:bg-[#283593] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            {isPending ? "Creando cuenta..." : "Continuar"} <span>&rarr;</span>
+            {isPending ? "Creando cuenta..." : "Crear cuenta"} <span>&rarr;</span>
           </button>
         </form>
-      )}
-
-      {step === 2 && (
-        <div className="space-y-6 py-8">
-          <div className="text-center">
-            <p className="text-lg font-medium text-gray-900">Preferencias de fragancias</p>
-            <p className="text-sm text-gray-500 mt-1">Próximamente</p>
-          </div>
-          <div className="flex gap-3">
-            <button
-              onClick={() => setStep(1)}
-              className="flex-1 py-3 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50"
-            >
-              &larr; Atrás
-            </button>
-            <button
-              onClick={() => setStep(3)}
-              className="flex-1 py-3 bg-[#1a237e] text-white rounded-xl text-sm font-medium hover:bg-[#283593]"
-            >
-              Continuar &rarr;
-            </button>
-          </div>
-        </div>
-      )}
-
-      {step === 3 && (
-        <div className="space-y-6 py-8">
-          <div className="text-center">
-            <p className="text-lg font-medium text-gray-900">Verificación</p>
-            <p className="text-sm text-gray-500 mt-1">Próximamente</p>
-          </div>
-          <div className="flex gap-3">
-            <button
-              onClick={() => setStep(2)}
-              className="flex-1 py-3 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50"
-            >
-              &larr; Atrás
-            </button>
-          </div>
-        </div>
-      )}
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">

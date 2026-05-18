@@ -1,4 +1,3 @@
-import { Exclude } from 'class-transformer';
 import {
   Column,
   CreateDateColumn,
@@ -12,22 +11,30 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column('text', {
-    unique: true,
-  })
-  user_name!: string;
-
   @Column('text')
   nombre!: string;
+
+  @Column('text')
+  apellido!: string;
+
+  @Column('text', {
+    unique: true,
+    nullable: true,
+  })
+  correo!: string;
 
   @Column('text', {
     select: false,
   })
   password!: string;
 
-  //1 es admi y 2 es empleado
   @Column('int')
   rol!: number;
+
+  @Column('bigint', {
+    nullable: true,
+  })
+  telefono!: number;
 
   @Column('bool', {
     default: true,

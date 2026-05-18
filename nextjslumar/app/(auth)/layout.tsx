@@ -1,3 +1,4 @@
+import Image from "next/image";
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen bg-white text-gray-900">
@@ -20,18 +21,15 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         </div>
 
         <div className="absolute inset-0">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-px bg-white/10"
-              style={{
-                left: `${5 + i * 5}%`,
-                top: 0,
-                height: "100%",
-                transform: `rotate(${-5 + Math.random() * 10}deg)`,
-              }}
-            />
-          ))}
+
+
+          <Image
+            src="/images/mathilde.jpg"
+            alt="Auth Background"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 45vw"
+          />
+
         </div>
 
         <div className="relative z-10 space-y-6">

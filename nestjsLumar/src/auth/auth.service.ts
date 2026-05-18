@@ -18,11 +18,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
   async login(loginDto: LoginDto) {
-    const { user_name, password } = loginDto;
+    const { correo, password } = loginDto;
 
     const user = await this.userRepository.findOne({
-      where: { user_name },
-      select: { id: true, user_name: true, nombre: true, rol: true, password: true },
+      where: { correo },
+      select: { id: true, correo: true, nombre: true, apellido: true, rol: true, password: true },
     });
 
     if (!user) {

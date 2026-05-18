@@ -1,25 +1,41 @@
 import {
+  IsEmail,
   IsIn,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsPositive,
   IsString,
   Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @ApiProperty({
-    description: 'Nombre de usuario unico',
-    example: 'admin01',
-    minLength: 4,
+    description: 'Nombre del usuario',
+    example: 'Juan',
   })
   @IsNotEmpty()
   @IsString()
-  @MinLength(4)
-  user_name!: string;
+  nombre!: string;
+
+  @ApiProperty({
+    description: 'Apellido del usuario',
+    example: 'Perez',
+  })
+  @IsNotEmpty()
+  @IsString()
+  apellido!: string;
+
+  @ApiProperty({
+    description: 'Correo electronico del usuario',
+    example: 'admin@lumar.com',
+  })
+  @IsNotEmpty()
+  @IsEmail()
+  correo!: string;
 
   @ApiProperty({
     description: 'Contrasena del usuario',
@@ -37,14 +53,6 @@ export class CreateUserDto {
   password!: string;
 
   @ApiProperty({
-    description: 'Nombre completo del usuario',
-    example: 'Juan Perez',
-  })
-  @IsNotEmpty()
-  @IsString()
-  nombre!: string;
-
-  @ApiProperty({
     description: 'Rol del usuario (1: admin, 2: vendedor)',
     example: 1,
     enum: [1, 2],
@@ -53,4 +61,11 @@ export class CreateUserDto {
   @IsPositive()
   @IsIn([1, 2])
   rol!: number;
+
+  @ApiPropertyOptional({
+    description: 'Telefono del usuario',
+    example: 59170000000,
+  })
+  @IsOptional()
+  telefono?: number;
 }
