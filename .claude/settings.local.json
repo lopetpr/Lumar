@@ -26,7 +26,13 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3001/tienda)",
       "Bash(curl -s -o /dev/null -w '__TRACKED_VAR__ %{http_code}\\\\n' http://localhost:3001__TRACKED_VAR__)",
       "Bash(curl -s http://localhost:3001/tienda/bruma-azul)",
-      "Bash(curl -s http://localhost:3001/tiendas)"
+      "Bash(curl -s http://localhost:3001/tiendas)",
+      "Bash(curl -s -o /dev/null -w \"hero.jpg %{http_code}\\\\n\" http://localhost:3001/images/hero.jpg)",
+      "Bash(curl -s -o /dev/null -w \"logo %{http_code}\\\\n\" http://localhost:3001/images/logo.jpeg)",
+      "Bash(curl -s -o /dev/null -w \"/novedades %{http_code}\\\\n\" http://localhost:3001/novedades)",
+      "Bash(curl -s http://localhost:3001/novedades)",
+      "Bash(curl -s -o /dev/null -w \"/sale %{http_code}\\\\n\" http://localhost:3001/sale)",
+      "Bash(curl -s http://localhost:3001/sale)"
     ]
   }
 }

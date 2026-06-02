@@ -1,27 +1,31 @@
 @import "tailwindcss";
 
 /*
-  Lumar Parfums — dark theme palette.
-  Deep navy canvas, one sharp electric-blue accent. Every blue in the UI
+  Lumar Parfums — light theme palette.
+  White canvas, deep navy ink, one electric-blue accent. Every blue in the UI
   resolves to --color-accent so the system stays consistent.
 */
 :root {
-  --background: #080b18;
-  --foreground: #f3f5fc;
+  --background: #ffffff;
+  --foreground: #0f1320;
 
   /* Surfaces & text */
-  --color-base: #080b18;       /* page canvas */
-  --color-surface: #11162f;    /* header, inputs, sort menu */
-  --color-surface-2: #1a2143;  /* hover / elevated */
-  --color-line: #242c4d;       /* hairline borders */
-  --color-fg: #f3f5fc;         /* primary text / headings */
-  --color-muted: #8a93b4;      /* secondary text */
-  --color-ink: #080b18;        /* dark text on light chips/badges (avoids text-base collision) */
+  --color-base: #ffffff;       /* page canvas */
+  --color-surface: #f6f7fb;    /* cards, inputs, sort menu */
+  --color-surface-2: #eceef5;  /* hover / elevated */
+  --color-line: #e6e8f0;       /* hairline borders */
+  --color-fg: #0f1320;         /* primary text / headings */
+  --color-muted: #5b6472;      /* secondary text */
+  --color-ink: #0f1320;        /* near-black ink (badges, nav bar) */
 
   /* Single accent — used for every interactive blue */
-  --color-accent: #4f74ff;
-  --color-accent-2: #6f8cff;   /* hover / lighter */
-  --color-accent-soft: #9fb2ff;/* subtle light-blue text */
+  --color-accent: #3651e6;
+  --color-accent-2: #4f6cff;   /* hover / lighter */
+  --color-accent-soft: #4a63d8;/* accent text on pale tints */
+
+  /* Warm cream for the promo bar + SALE chip */
+  --color-sage: #f0e8dc;
+  --color-sage-2: #e7dccb;
 
   /* Deep gradient stops for the large hero / newsletter panels */
   --color-brand-700: #16215f;
@@ -47,6 +51,8 @@
   --color-accent: var(--color-accent);
   --color-accent-2: var(--color-accent-2);
   --color-accent-soft: var(--color-accent-soft);
+  --color-sage: var(--color-sage);
+  --color-sage-2: var(--color-sage-2);
 
   --color-brand-700: var(--color-brand-700);
   --color-brand-600: var(--color-brand-600);
@@ -54,7 +60,7 @@
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
@@ -72,6 +78,50 @@ body {
     transparent 2px,
     transparent 11px
   );
+}
+
+/* Hero wordmark — photo clipped inside the letterforms */
+.hero-mask {
+  background-image: url("/images/hero.jpg");
+  background-size: cover;
+  background-position: 50% 42%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  transition: background-position 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.hero-mask:hover {
+  background-position: 50% 50%;
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.85s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
 /* Leaflet city labels — clean text, no default tooltip chrome */

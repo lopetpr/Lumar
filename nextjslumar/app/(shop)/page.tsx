@@ -1,14 +1,10 @@
 import Link from "next/link"
+import Image from "next/image"
 import { ProductCard } from "@/components/shop/ProductCard"
+import { TypewriterHeadline } from "@/components/shop/TypewriterHeadline"
 import { PRODUCTS, FAMILIES } from "@/lib/data/products"
 
 const bestsellers = PRODUCTS.slice(0, 4)
-
-const STATS = [
-  { value: "12", label: "Fragancias" },
-  { value: "4.9", label: "Rating medio" },
-  { value: "8K+", label: "Clientes" },
-]
 
 const VALUE_PROPS = [
   {
@@ -44,97 +40,57 @@ const VALUE_PROPS = [
 // Subtle dark tints for the family tiles
 const FAMILY_TINTS = ["#3a55dd", "#7c5cff", "#1f9fd6", "#d6a52b", "#d65a9f"]
 
-function HeroCard() {
-  return (
-    <div className="relative aspect-[5/4.4] w-full overflow-hidden rounded-3xl bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 lg:aspect-auto lg:h-full">
-      {/* diagonal lines */}
-      <div
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(-45deg, rgba(255,255,255,.22) 0, rgba(255,255,255,.22) 1px, transparent 1px, transparent 26px)",
-        }}
-      />
-      {/* bottle */}
-      <div className="absolute inset-0 grid place-items-center">
-        <svg width="150" height="240" viewBox="0 0 150 240" fill="none" aria-hidden="true">
-          <rect x="60" y="6" width="30" height="30" rx="5" stroke="rgba(255,255,255,.6)" strokeWidth="1.5" />
-          <rect x="66" y="34" width="18" height="18" stroke="rgba(255,255,255,.5)" strokeWidth="1.5" />
-          <rect x="22" y="50" width="106" height="184" rx="26" stroke="rgba(255,255,255,.7)" strokeWidth="1.5" />
-          <text x="75" y="138" textAnchor="middle" fill="rgba(255,255,255,.85)" fontSize="15" letterSpacing="4" fontWeight="500">LUMAR</text>
-          <text x="75" y="158" textAnchor="middle" fill="rgba(255,255,255,.5)" fontSize="8" letterSpacing="2">EAU DE PARFUM · 50mL</text>
-        </svg>
-      </div>
-      {/* captions */}
-      <span className="absolute bottom-6 left-6 text-xs font-medium tracking-[0.2em] text-white/80">
-        N°07 — BRUMA AZUL
-      </span>
-      <span className="absolute bottom-6 right-6 text-xs text-white/45">
-        [foto principal de campaña]
-      </span>
-    </div>
-  )
-}
-
 export default function HomePage() {
   return (
     <>
-      {/* HERO */}
-      <section className="mx-auto max-w-[1280px] px-6 pt-12 lg:pt-16">
-        <div className="grid items-stretch gap-12 lg:grid-cols-2">
-          <div className="flex flex-col justify-center">
-            <span className="mb-7 inline-flex w-fit items-center gap-2 rounded-full bg-accent/15 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent-soft">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              Colección Otoño · 2025
-            </span>
+      {/* HERO — full-bleed photo, text over a soft left scrim */}
+      <section className="relative min-h-[90vh] overflow-hidden">
+        <Image
+          src="/images/hero.jpg"
+          alt="Persona aplicándose un perfume Lumar bajo luz cálida"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+          style={{ objectPosition: "center 32%" }}
+        />
+        {/* scrim — darkens the left for legibility, keeps the right vivid */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(100deg, rgba(8,9,15,0.88) 0%, rgba(8,9,15,0.66) 32%, rgba(8,9,15,0.28) 52%, rgba(8,9,15,0) 72%)",
+          }}
+        />
 
-            <h1 className="text-5xl font-semibold leading-[1.02] tracking-tight sm:text-6xl">
-              <span className="text-fg">Aromas que</span>
-              <br />
-              <span className="text-accent">cuentan historias.</span>
-            </h1>
+        <div className="relative z-10 mx-auto flex min-h-[90vh] max-w-[1600px] flex-col justify-center px-6 py-24">
+          <TypewriterHeadline />
 
-            <p className="mt-6 max-w-md text-base leading-relaxed text-muted">
-              Perfumes artesanales pensados para los días largos y las noches sin
-              prisa. Doce fragancias, doce momentos.
-            </p>
+          <p className="rise mt-8 max-w-md text-base leading-relaxed text-white/75" style={{ animationDelay: "1.5s" }}>
+            Perfumes artesanales pensados para los días largos y las noches sin
+            prisa. Doce fragancias, doce momentos.
+          </p>
 
-            <div className="mt-9 flex flex-wrap items-center gap-6">
-              <Link
-                href="/tienda"
-                className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-accent-2"
-              >
-                Explorar catálogo
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-6-6l6 6-6 6" />
-                </svg>
-              </Link>
-              <Link
-                href="/tienda"
-                className="inline-flex items-center gap-2 text-sm font-medium text-fg hover:text-accent"
-              >
-                Encuentra tu aroma
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-6-6l6 6-6 6" />
-                </svg>
-              </Link>
-            </div>
-
-            <hr className="my-9 border-line" />
-
-            <dl className="flex gap-12">
-              {STATS.map((s) => (
-                <div key={s.label}>
-                  <dt className="text-3xl font-semibold text-fg">{s.value}</dt>
-                  <dd className="mt-1 text-[11px] font-medium uppercase tracking-wider text-muted">
-                    {s.label}
-                  </dd>
-                </div>
-              ))}
-            </dl>
+          <div className="rise mt-9 flex flex-wrap items-center gap-6" style={{ animationDelay: "1.7s" }}>
+            <Link
+              href="/tienda"
+              className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-accent-2"
+            >
+              Explorar catálogo
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-6-6l6 6-6 6" />
+              </svg>
+            </Link>
+            <Link
+              href="/tienda"
+              className="inline-flex items-center gap-2 text-sm font-medium text-white transition-colors hover:text-white/70"
+            >
+              Encuentra tu aroma
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-6-6l6 6-6 6" />
+              </svg>
+            </Link>
           </div>
-
-          <HeroCard />
         </div>
       </section>
 
@@ -181,7 +137,7 @@ export default function HomePage() {
               key={f}
               href={`/tienda?familia=${encodeURIComponent(f)}`}
               className="group relative flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-2xl border border-line p-5 transition-all hover:border-accent/50 hover:shadow-[0_18px_50px_-18px_rgba(79,116,255,0.45)]"
-              style={{ backgroundColor: `color-mix(in srgb, ${FAMILY_TINTS[i]} 16%, #11162f)` }}
+              style={{ backgroundColor: `color-mix(in srgb, ${FAMILY_TINTS[i]} 16%, #ffffff)` }}
             >
               <span className="text-lg font-semibold text-fg">{f}</span>
               <span className="mt-1 inline-flex items-center gap-1 text-sm text-fg/60 transition-transform group-hover:translate-x-1">
