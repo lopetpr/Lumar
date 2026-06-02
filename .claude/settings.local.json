@@ -16,7 +16,17 @@
       "mcp__Claude_in_Chrome__find",
       "mcp__Claude_in_Chrome__form_input",
       "mcp__Claude_Preview__preview_start",
-      "Bash(kill 23354)"
+      "Bash(kill 23354)",
+      "Bash(docker compose *)",
+      "Bash(curl -s -o /dev/null -w \"/ %{http_code}\\\\n\" http://localhost:3001/)",
+      "Bash(curl -s -o /dev/null -w \"/tienda %{http_code}\\\\n\" http://localhost:3001/tienda)",
+      "Bash(curl -s http://localhost:3001/)",
+      "Bash(curl -s http://localhost:3001/tienda)",
+      "Bash(curl -s -o /dev/null -w \"/ %{http_code}  /tienda \" http://localhost:3001/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3001/tienda)",
+      "Bash(curl -s -o /dev/null -w '__TRACKED_VAR__ %{http_code}\\\\n' http://localhost:3001__TRACKED_VAR__)",
+      "Bash(curl -s http://localhost:3001/tienda/bruma-azul)",
+      "Bash(curl -s http://localhost:3001/tiendas)"
     ]
   }
 }
